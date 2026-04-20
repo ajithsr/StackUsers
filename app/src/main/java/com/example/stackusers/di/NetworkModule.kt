@@ -21,7 +21,7 @@ object NetworkModule {
 
     private const val BASE_URL = "https://api.stackexchange.com/2.3/"
 
-    private val cacheSize = 10L * 1024 * 1024 // 10 MB
+    private const val CACHE_SIZE = 10L * 1024 * 1024 // 10 MB
 
     private val onlineInterceptor = Interceptor { chain ->
         val response = chain.proceed(chain.request())
@@ -34,7 +34,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
-        val cache = Cache(context.cacheDir, cacheSize)
+        val cache = Cache(context.cacheDir, CACHE_SIZE)
         return OkHttpClient.Builder()
             .cache(cache)
             .addInterceptor(
