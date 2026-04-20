@@ -1,6 +1,7 @@
 package com.example.stackusers.di
 
 import android.content.Context
+import com.example.stackusers.data.remote.api.StackOverflowApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,5 +54,10 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+    @Provides
+    @Singleton
+    fun provideStackOverflowApi(retrofit: Retrofit): StackOverflowApi =
+        retrofit.create(StackOverflowApi::class.java)
 
 }
