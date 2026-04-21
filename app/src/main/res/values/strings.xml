@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">StackUsers</string>
+
+    <string name="reputation_label">Reputation: %s</string>
+
+    <!-- Content description -->
+    <string name="cd_profile_picture">Profile picture</string>
+
 </resources>
