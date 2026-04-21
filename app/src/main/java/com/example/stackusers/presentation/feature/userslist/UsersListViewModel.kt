@@ -36,7 +36,6 @@ class UsersListViewModel @Inject constructor(
                         UiState.Success(result.data)
                     }
                 }
-
                 is Result.Error -> UiState.Error(result.message)
             }
         }.catch { exc ->

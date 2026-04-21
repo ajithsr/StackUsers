@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">StackUsers</string>
 
+    <!-- User list screen -->
+    <string name="top_users_title">StackOverflow Top Users</string>
+    <string name="retry">Retry</string>
+    <string name="something_went_wrong">Something went wrong</string>
+
+    <!-- User item -->
     <string name="reputation_label">Reputation: %s</string>
 
     <!-- Content description -->
