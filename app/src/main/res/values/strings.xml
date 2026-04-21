@@ -8,8 +8,11 @@
 
     <!-- User item -->
     <string name="reputation_label">Reputation: %s</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
 
     <!-- Content description -->
     <string name="cd_profile_picture">Profile picture</string>
+    <string name="cd_following">Following</string>
 
 </resources>

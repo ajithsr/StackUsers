@@ -15,11 +15,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -68,7 +74,13 @@ fun UsersListScreen(
             }
             is UiState.Success -> {
                 val users = state.data as List<User>
-                UsersList(users)
+                UsersList(
+                    users,
+                    onToggleFollow =
+                        { userId,
+                          isFollowed -> viewModel.toggleFollow(userId, isFollowed)
+                        }
+                )
             }
             is UiState.Error -> {
                 ErrorContent(state.message, {
@@ -90,7 +102,10 @@ private fun LoadingContent() {
 }
 
 @Composable
-fun UsersList(users: List<User>) {
+fun UsersList(
+    users: List<User>,
+    onToggleFollow: (userId: Long, isFollowed: Boolean) -> Unit = { _, _ -> }
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(0.dp)
@@ -98,13 +113,17 @@ fun UsersList(users: List<User>) {
         items(
             items = users, key = { it.userId }
         ) { user ->
-            UserItem(user, modifier = Modifier.padding(5.dp))
+            UserItem(
+                user,
+                onToggleFollow = { onToggleFollow(user.userId, user.isFollowed) },
+                modifier = Modifier.padding(5.dp)
+            )
         }
     }
 }
 
 @Composable
-fun UserItem(user: User, modifier: Modifier = Modifier) {
+fun UserItem(user: User,  onToggleFollow: () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(
             modifier = Modifier
@@ -131,6 +150,15 @@ fun UserItem(user: User, modifier: Modifier = Modifier) {
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold
                     )
+                    if (user.isFollowed) {
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = stringResource(R.string.cd_following),
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
                 }
                 Text(
                     text = stringResource(
@@ -142,12 +170,47 @@ fun UserItem(user: User, modifier: Modifier = Modifier) {
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
+            FollowButton(
+                isFollowed = user.isFollowed,
+                onToggleFollow = onToggleFollow
+            )
         }
 
         HorizontalDivider(
             modifier = Modifier.padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.outlineVariant
         )
+    }
+}
+
+@Composable
+private fun FollowButton(
+    isFollowed: Boolean,
+    onToggleFollow: () -> Unit
+) {
+    if (isFollowed) {
+        OutlinedButton(
+            onClick = onToggleFollow,
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = MaterialTheme.colorScheme.error
+            )
+        ) {
+            Text(
+                text = stringResource(R.string.unfollow),
+                style = MaterialTheme.typography.labelMedium
+            )
+        }
+    } else {
+        Button(
+            onClick = onToggleFollow,
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.follow),
+                style = MaterialTheme.typography.labelMedium
+            )
+        }
     }
 }
 
