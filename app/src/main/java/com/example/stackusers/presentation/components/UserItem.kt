@@ -1,13 +1,17 @@
 package com.example.stackusers.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -93,11 +97,28 @@ fun UserItem(user: User,  onToggleFollow: () -> Unit, modifier: Modifier = Modif
 @Preview
 @Composable
 fun UserItemPreview() {
-    val user = User(
-                userId = 1L,
-                displayName = "Arun Xavier",
-                reputation = 50000,
-                profileImageUrl = "https://img/arun"
-            )
-    UserItem(user = user, {})
+    val users = listOf(User(
+        userId = 1L,
+        displayName = "Arun Xavier",
+        reputation = 50000,
+        profileImageUrl = "https://img/arun",
+        isFollowed = true
+    ), User(
+        userId = 2L,
+        displayName = "Mark Peters",
+        reputation = 40000,
+        profileImageUrl = "https://img/mark",
+        isFollowed = false
+    ))
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(0.dp)
+    ) {
+        items(
+            items = users, key = { it.userId }
+        ) { user ->
+            UserItem(user = user, {})
+        }
+    }
 }
