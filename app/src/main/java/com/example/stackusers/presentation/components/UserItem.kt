@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.stackusers.R
@@ -87,4 +88,16 @@ fun UserItem(user: User,  onToggleFollow: () -> Unit, modifier: Modifier = Modif
             color = MaterialTheme.colorScheme.outlineVariant
         )
     }
+}
+
+@Preview
+@Composable
+fun UserItemPreview() {
+    val user = User(
+                userId = 1L,
+                displayName = "Arun Xavier",
+                reputation = 50000,
+                profileImageUrl = "https://img/arun"
+            )
+    UserItem(user = user, {})
 }
